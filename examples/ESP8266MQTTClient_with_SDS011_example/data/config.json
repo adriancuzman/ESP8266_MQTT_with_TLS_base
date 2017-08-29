@@ -1,0 +1,12 @@
+{
+  "wifi_ssid":"",
+  "wifi_password":"",
+  "mqtt_server":"",
+  "mqtt_server_port": 1883,
+  "mqtt_user_name":"",
+  "mqtt_user_password":"",
+  "mqtt_client_name":"",
+  "mqtt_input_topic":"",
+  "mqtt_output_topic":"",
+  "mqtt_server_fingerprint":""
+}

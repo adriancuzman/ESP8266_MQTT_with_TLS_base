@@ -1,6 +1,12 @@
 #include <ESP8266MQTTClient.h>
 
 /**
+Example for ESP8266MQTTClient
+
+The base/common code for sending and receiving information over MQTT on an ESP8266 with TLS encryption.
+This base can be used to quickly add a sensor or control a device over MQTT.
+Just add this library to have wifi with mDNS support and MQTT with TLS support.
+This is used to have smaller .ino files and not duplicate the wifi+mqtt setup code, just add sensor/device specific code.
 
 Configuration details will be loaded from file /config.json
 
@@ -19,9 +25,15 @@ Example of a configuration file:
 }
 */
 
+// clients used that need to be instatiated outside
 WiFiClientSecure espClient;
 WiFiUDP udp;
 PubSubClient pubSubClient(espClient);
+
+/** mDNS resolver is used to resolve local hosts,
+for example if your raspberrypi localhost is "rasberrypi.local"
+The library can be found on github - https://github.com/madpilot/mDNSResolver
+*/
 mDNSResolver::Resolver resolver(udp);
 
 ESP8266MQTTClient mqttClient(&espClient, pubSubClient, &resolver);

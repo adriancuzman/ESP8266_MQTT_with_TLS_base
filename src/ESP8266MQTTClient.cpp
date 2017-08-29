@@ -77,8 +77,12 @@ void ESP8266MQTTClient::setup_mqtt_details(MQTT_CALLBACK_SIGNATURE) {
   pubSubClient.setCallback(callback);
 }
 
-void ESP8266MQTTClient::sendMessage(char* payload) {
+void ESP8266MQTTClient::sendMessage(const char* payload) {
   pubSubClient.publish(mqtt_output_topic.c_str(), payload);
+}
+
+void ESP8266MQTTClient::sendMessage(const char* topic, const char* payload) {
+  pubSubClient.publish(topic, payload);
 }
 
 void ESP8266MQTTClient::reconnect() {

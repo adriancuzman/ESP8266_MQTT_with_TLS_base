@@ -24,7 +24,8 @@ class ESP8266MQTTClient
 
     void setup(MQTT_CALLBACK_SIGNATURE);
     void loop();
-    void sendMessage(char* payload);
+    void sendMessage(const char* payload);
+    void sendMessage(const char* topic, const char* payload);
 
   private:
 

@@ -1,0 +1,16 @@
+{
+    "name": "ESP8266MQTTClient",
+    "keywords": "ethernet, mqtt, esp8266, iot",
+    "description": "The base/common code for sending and receiving information over MQTT on an ESP8266 with TLS encryption. This base can be used to quickly add a sensor or control a device over MQTT. Just add this library to have wifi with mDNS support and MQTT with TLS support. This is used to have smaller .ino files and not duplicate the wifi+mqtt setup code, just add sensor/device specific code.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/adriancuzman/ESP8266_MQTTClient"
+    },
+    "version": "0.9.0",
+    "exclude": "tests",
+    "examples": "examples/*/*.ino",
+    "frameworks": "arduino",
+    "platforms": [
+        "espressif"
+    ]
+}

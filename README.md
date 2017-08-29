@@ -1,1 +1,2 @@
-# ESP8266_MQTT_with_TLS_base
+The base/common code for sending and receiving information over MQTT on an ESP8266 with TLS encryption. This base can be used to quickly add a sensor or control a device over MQTT. Just add this library to have wifi with mDNS support and MQTT with TLS support. This is used to have smaller .ino files and not duplicate the wifi+mqtt setup code, just add sensor/device specific code.
+Configuration is read from /config.json file on the ESP8266 file system. More info on this http://esp8266.github.io/Arduino/versions/2.0.0/doc/filesystem.html

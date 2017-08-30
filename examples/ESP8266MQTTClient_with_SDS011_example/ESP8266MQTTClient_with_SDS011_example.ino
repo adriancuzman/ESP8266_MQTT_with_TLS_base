@@ -44,6 +44,12 @@ const char* pm25_topic = "sds11_01_pm10";
 //topic for pm10 particles
 const char* pm10_topic = "sds11_01_pm25";
 
+// connect D1 to SDS011 tx pin
+const int SDS011_tx_pin = D1;
+
+// connect D2 to SDS011 rx pin
+const int SDS011_rx_pin = D2;
+
 // in seconds
 int sleepTime = 600;
 int wormupTime = 30;
@@ -82,7 +88,7 @@ void loop() {
 
 void setup_sds() {
   Serial.println("---- sds setup --- ");
-  my_sds.begin(D1, D2);
+  my_sds.begin(SDS011_tx_pin, SDS011_rx_pin);
   my_sds.sleep();
   sds_sleeping = 1;
 }

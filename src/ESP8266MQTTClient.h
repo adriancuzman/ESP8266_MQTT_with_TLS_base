@@ -9,6 +9,7 @@
 #include <mDNSResolver.h>
 #include <ArduinoJson.h>
 #include "FS.h"
+#include <ArduinoOTA.h>
 
 
 class ESP8266MQTTClient
@@ -43,6 +44,10 @@ class ESP8266MQTTClient
     String mqtt_client_name = "";
     String mqtt_input_topic = "";
     String mqtt_output_topic = "";
+    int ota_port = 8266;
+    String ota_password = "";
+    String ota_hostname = "";
+
     const char* config_file = "/config.json";
 
     // SHA1 fingerprint of the certificate
@@ -52,6 +57,7 @@ class ESP8266MQTTClient
 
     void setup_wifi();
     void setup_mDNS();
+    void setup_OTA();
     void resolve_mqtt_server_hostname();
     void setup_mqtt_details(MQTT_CALLBACK_SIGNATURE);
     void reconnect();

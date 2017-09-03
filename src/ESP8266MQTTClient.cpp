@@ -88,13 +88,19 @@ void ESP8266MQTTClient::sendMessage(const char* topic, const char* payload) {
 void ESP8266MQTTClient::reconnect() {
 
   // Loop until we're reconnected
+  int retryCounter = 0;
   while (!pubSubClient.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
     if (pubSubClient.connect(mqtt_client_name.c_str(), mqtt_user_name.c_str(), mqtt_user_password.c_str())) {
+      retryCounter = 0;
       Serial.println("connected");
       pubSubClient.subscribe(mqtt_input_topic.c_str());
     } else {
+      retryCounter++;
+      if (retryCounter == 3){
+        ESP.restart();
+      }
       Serial.print("failed, rc=");
       Serial.print(pubSubClient.state());
       Serial.println(" try again in 5 seconds");

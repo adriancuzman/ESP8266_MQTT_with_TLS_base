@@ -150,7 +150,7 @@ bool ESP8266MQTTClient::loadConfigFile() {
   // use configFile.readString instead.
   configFile.readBytes(buf.get(), size);
 
-  StaticJsonBuffer<200> jsonBuffer;
+  StaticJsonBuffer<1024> jsonBuffer;
   JsonObject& json = jsonBuffer.parseObject(buf.get());
 
   if (!json.success()) {

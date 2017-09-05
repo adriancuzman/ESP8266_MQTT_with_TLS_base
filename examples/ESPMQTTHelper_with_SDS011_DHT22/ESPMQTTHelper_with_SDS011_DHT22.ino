@@ -1,8 +1,8 @@
-#include <ESP8266MQTTClient.h>
+#include <ESPMQTTHelper.h>
 #include <SDS011.h>
 #include <DHT.h>
 /**
-  Example for ESP8266MQTTClient with the Air Quality SDS011 sensor
+  Example for ESPMQTTHelper with the Air Quality SDS011 sensor
 
   The base/common code for sending and receiving information over MQTT on an ESP8266 with TLS encryption.
   This base can be used to quickly add a sensor or control a device over MQTT.
@@ -65,7 +65,7 @@ PubSubClient pubSubClient(espClient);
 */
 mDNSResolver::Resolver resolver(udp);
 
-ESP8266MQTTClient mqttClient(&espClient, pubSubClient, &resolver);
+ESPMQTTHelper mqttHelper(&espClient, pubSubClient, &resolver);
 
 //topic for pm2.5 particles
 const char* pm25_topic = "sds11_01_pm10";
@@ -106,13 +106,13 @@ SDS011 my_sds;
 
 void setup() {
   Serial.begin(115200);
-  mqttClient.setup(onMessageReceived);
+  mqttHelper.setup(onMessageReceived);
   setup_SDS();
   setup_DHT();
 }
 
 void loop() {
-  mqttClient.loop();
+  mqttHelper.loop();
   sds_loop();
   dht_loop();
 }
@@ -183,8 +183,8 @@ void readSDSValues() {
   Serial.println("P2.5: " + String(p25));
   Serial.println("P10:  " + String(p10));
 
-  mqttClient.sendMessage(pm25_topic, String(p25).c_str());
-  mqttClient.sendMessage(pm10_topic, String(p10).c_str());
+  mqttHelper.sendMessage(pm25_topic, String(p25).c_str());
+  mqttHelper.sendMessage(pm10_topic, String(p10).c_str());
 }
 
 void dht_loop(){
@@ -225,11 +225,11 @@ void readDHTValues() {
   Serial.print(" *C ");
   Serial.println();
 
-  mqttClient.sendMessage(temperature_topic, String(t).c_str());
+  mqttHelper.sendMessage(temperature_topic, String(t).c_str());
 
-  mqttClient.sendMessage(humidity_topic, String(h).c_str());
+  mqttHelper.sendMessage(humidity_topic, String(h).c_str());
 
-  mqttClient.sendMessage(heat_index_topic, String(hic).c_str());
+  mqttHelper.sendMessage(heat_index_topic, String(hic).c_str());
 }
 
 

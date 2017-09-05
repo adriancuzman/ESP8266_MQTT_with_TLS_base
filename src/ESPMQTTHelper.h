@@ -1,5 +1,5 @@
-#ifndef ESP8266MQTTCLIENT_H
-#define ESP8266MQTTCLIENT_H
+#ifndef ESPMQTTHelper_H
+#define ESPMQTTHelper_H
 
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
@@ -11,12 +11,12 @@
 #include "FS.h"
 
 
-class ESP8266MQTTClient
+class ESPMQTTHelper
 {
 
   public:
 
-    ESP8266MQTTClient(WiFiClientSecure* secureClient, PubSubClient pubSubClient, mDNSResolver::Resolver* mDNSResolver) {
+    ESPMQTTHelper(WiFiClientSecure* secureClient, PubSubClient pubSubClient, mDNSResolver::Resolver* mDNSResolver) {
       this->pubSubClient = pubSubClient;
       this->secureClient = secureClient;
       this->mDNSResolver = mDNSResolver;

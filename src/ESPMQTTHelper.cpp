@@ -1,14 +1,14 @@
-#include "ESP8266MQTTClient.h"
+#include "ESPMQTTHelper.h"
 
 using namespace mDNSResolver;
 
-void ESP8266MQTTClient::setup(MQTT_CALLBACK_SIGNATURE) {
+void ESPMQTTHelper::setup(MQTT_CALLBACK_SIGNATURE) {
   setup_wifi();
   setup_mDNS();
   setup_mqtt_details(callback);
 }
 
-void ESP8266MQTTClient::setup_wifi() {
+void ESPMQTTHelper::setup_wifi() {
   delay(10);
   // We start by connecting to a WiFi network
   if (loadConfigFile()) {
@@ -35,7 +35,7 @@ void ESP8266MQTTClient::setup_wifi() {
 
 }
 
-void ESP8266MQTTClient::setup_mDNS() {
+void ESPMQTTHelper::setup_mDNS() {
   if (!MDNS.begin(mqtt_client_name.c_str())) {
     // Start the mDNS responder for esp8266.local
     Serial.println("Error setting up MDNS responder!");
@@ -45,7 +45,7 @@ void ESP8266MQTTClient::setup_mDNS() {
 
 
  
-void ESP8266MQTTClient::resolve_mqtt_server_hostname() {
+void ESPMQTTHelper::resolve_mqtt_server_hostname() {
   if (mqtt_server.endsWith(".local")) {
     Serial.println("resolving using mDNS resolver because local hostname");
     
@@ -71,21 +71,21 @@ void ESP8266MQTTClient::resolve_mqtt_server_hostname() {
   }
 }
 
-void ESP8266MQTTClient::setup_mqtt_details(MQTT_CALLBACK_SIGNATURE) {
+void ESPMQTTHelper::setup_mqtt_details(MQTT_CALLBACK_SIGNATURE) {
   resolve_mqtt_server_hostname();
   pubSubClient.setServer(mqtt_server_ip, mqtt_server_port);
   pubSubClient.setCallback(callback);
 }
 
-void ESP8266MQTTClient::sendMessage(const char* payload) {
+void ESPMQTTHelper::sendMessage(const char* payload) {
   pubSubClient.publish(mqtt_output_topic.c_str(), payload);
 }
 
-void ESP8266MQTTClient::sendMessage(const char* topic, const char* payload) {
+void ESPMQTTHelper::sendMessage(const char* topic, const char* payload) {
   pubSubClient.publish(topic, payload);
 }
 
-void ESP8266MQTTClient::reconnect() {
+void ESPMQTTHelper::reconnect() {
 
   // Loop until we're reconnected
   int retryCounter = 0;
@@ -121,7 +121,7 @@ void ESP8266MQTTClient::reconnect() {
   }
 }
 
-bool ESP8266MQTTClient::loadConfigFile() {
+bool ESPMQTTHelper::loadConfigFile() {
   if (!SPIFFS.begin()) {
     Serial.println("Failed to mount file system");
     return false;
@@ -174,20 +174,20 @@ bool ESP8266MQTTClient::loadConfigFile() {
   return true;
 }
 
-void ESP8266MQTTClient::readField(JsonObject *json, char* field_name, String &storeVariable) {
+void ESPMQTTHelper::readField(JsonObject *json, char* field_name, String &storeVariable) {
   if (json->containsKey(field_name)) {
     const char* field_value = (*json)[field_name];
     storeVariable = String(field_value);
   }
 }
 
-void ESP8266MQTTClient::readField(JsonObject *json, char* field_name, int &storeVariable) {
+void ESPMQTTHelper::readField(JsonObject *json, char* field_name, int &storeVariable) {
   if (json->containsKey(field_name)) {
     storeVariable = (*json)[field_name];
   }
 }
 
-void ESP8266MQTTClient::loop() {
+void ESPMQTTHelper::loop() {
   if (!pubSubClient.connected()) {
     reconnect();
   }

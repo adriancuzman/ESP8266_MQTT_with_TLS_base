@@ -1,7 +1,7 @@
-#include <ESP8266MQTTClient.h>
+#include <ESPMQTTHelper.h>
 
 /**
-Example for ESP8266MQTTClient
+Example for ESPMQTTHelper
 
 The base/common code for sending and receiving information over MQTT on an ESP8266 with TLS encryption.
 This base can be used to quickly add a sensor or control a device over MQTT.
@@ -36,7 +36,7 @@ The library can be found on github - https://github.com/madpilot/mDNSResolver
 */
 mDNSResolver::Resolver resolver(udp);
 
-ESP8266MQTTClient mqttClient(&espClient, pubSubClient, &resolver);
+ESPMQTTHelper mqttClient(&espClient, pubSubClient, &resolver);
 
 void setup() {
   Serial.begin(115200);

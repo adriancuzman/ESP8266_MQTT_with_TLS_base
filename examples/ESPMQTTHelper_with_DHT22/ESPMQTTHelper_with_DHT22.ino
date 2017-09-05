@@ -1,8 +1,8 @@
-#include <ESP8266MQTTClient.h>
+#include <ESPMQTTHelper.h>
 #include "DHT.h"
 
 /**
-  Example for ESP8266MQTTClient with DHT22 sensor
+  Example for ESPMQTTHelper with DHT22 sensor
 
   The base/common code for sending and receiving information over MQTT on an ESP8266 with TLS encryption.
   This base can be used to quickly add a sensor or control a device over MQTT.
@@ -61,18 +61,18 @@ PubSubClient pubSubClient(espClient);
 */
 mDNSResolver::Resolver resolver(udp);
 
-ESP8266MQTTClient mqttClient(&espClient, pubSubClient, &resolver);
+ESPMQTTHelper mqttHelper(&espClient, pubSubClient, &resolver);
 
 long lastMsg;
 
 void setup() {
   Serial.begin(115200);
-  mqttClient.setup(onMessageReceived);
+  mqttHelper.setup(onMessageReceived);
   lastMsg =  millis();
 }
 
 void loop() {
-  mqttClient.loop();
+  mqttHelper.loop();
 
   long now = millis();
   if (now - lastMsg > 60000) {
@@ -108,11 +108,11 @@ void readDHTValues() {
   Serial.print(" *C ");
   Serial.println();
 
-  mqttClient.sendMessage(temperature_topic, String(t).c_str());
+  mqttHelper.sendMessage(temperature_topic, String(t).c_str());
 
-  mqttClient.sendMessage(humidity_topic, String(h).c_str());
+  mqttHelper.sendMessage(humidity_topic, String(h).c_str());
 
-  mqttClient.sendMessage(heat_index_topic, String(hic).c_str());
+  mqttHelper.sendMessage(heat_index_topic, String(hic).c_str());
 }
 
 void onMessageReceived(char* topic, byte* payload, unsigned int length) {

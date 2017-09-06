@@ -9,6 +9,7 @@
 #include <mDNSResolver.h>
 #include <ArduinoJson.h>
 #include "FS.h"
+#include <ESP8266MQTTClient.h>
 
 
 class ESPMQTTHelper
@@ -16,23 +17,20 @@ class ESPMQTTHelper
 
   public:
 
-    ESPMQTTHelper(WiFiClientSecure* secureClient, PubSubClient pubSubClient, mDNSResolver::Resolver* mDNSResolver) {
-      this->pubSubClient = pubSubClient;
-      this->secureClient = secureClient;
+    ESPMQTTHelper(mDNSResolver::Resolver* mDNSResolver) {
       this->mDNSResolver = mDNSResolver;
+      mqttClient =std::unique_ptr<MQTTClient>(new MQTTClient());
     }
 
-    void setup(MQTT_CALLBACK_SIGNATURE);
+    void setup(std::function<void(String topic, String data, bool isDataContinuation)>);
     void loop();
-    void sendMessage(const char* payload);
-    void sendMessage(const char* topic, const char* payload);
+    void sendMessage(String payload);
+    void sendMessage(String topic, String payload);
 
   private:
 
     mDNSResolver::Resolver* mDNSResolver;
-    PubSubClient pubSubClient;
-    WiFiClientSecure* secureClient;
-
+    std::unique_ptr<MQTTClient> mqttClient;
 
     String wifi_ssid = "";
     String wifi_password = "";
@@ -53,7 +51,7 @@ class ESPMQTTHelper
     void setup_wifi();
     void setup_mDNS();
     void resolve_mqtt_server_hostname();
-    void setup_mqtt_details(MQTT_CALLBACK_SIGNATURE);
+    void setup_mqtt_details(std::function<void(String topic, String data, bool isDataContinuation)>);
     void reconnect();
     bool loadConfigFile();
     void readField(JsonObject *json, char* field_name, String &storeVariable);

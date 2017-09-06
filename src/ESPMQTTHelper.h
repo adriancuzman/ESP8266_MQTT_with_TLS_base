@@ -17,9 +17,10 @@ class ESPMQTTHelper
 
   public:
 
-    ESPMQTTHelper(mDNSResolver::Resolver* mDNSResolver) {
-      this->mDNSResolver = mDNSResolver;
-      mqttClient =std::unique_ptr<MQTTClient>(new MQTTClient());
+    ESPMQTTHelper() {
+      mqttClient = std::unique_ptr<MQTTClient>(new MQTTClient());
+      wifiUDP = std::unique_ptr<WiFiUDP>(new WiFiUDP());
+      mDNSResolver = std::unique_ptr<mDNSResolver::Resolver>(new mDNSResolver::Resolver(*wifiUDP));
     }
 
     void setup(std::function<void(String topic, String data, bool isDataContinuation)>);
@@ -28,9 +29,10 @@ class ESPMQTTHelper
     void sendMessage(String topic, String payload);
 
   private:
-
-    mDNSResolver::Resolver* mDNSResolver;
     std::unique_ptr<MQTTClient> mqttClient;
+    std::unique_ptr<WiFiUDP> wifiUDP;
+    std::unique_ptr<mDNSResolver::Resolver> mDNSResolver;
+    
 
     String wifi_ssid = "";
     String wifi_password = "";
